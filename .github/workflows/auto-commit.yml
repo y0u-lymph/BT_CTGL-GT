@@ -1,0 +1,21 @@
+name: Auto Commit
+on:
+  schedule:
+    - cron: '0 0 * * *' # Chạy mỗi ngày một lần (tùy chỉnh theo chuẩn cron)
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Make changes
+        run: date > heartbeat.txt # Ví dụ: ghi thời gian vào file
+      - name: Commit files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m "Auto commit: $(date)"
+          git push
