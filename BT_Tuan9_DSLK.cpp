@@ -8,9 +8,9 @@ struct SinhVien{
 	char hoTen[50];
 	bool gioiTinh;
 	Ngay ngaySinh;
-	//char diaChi[100];
-	//char lop[12];
-	//char khoa[7];
+	char diaChi[100];
+	char lop[12];
+	char khoa[7];
 };
 struct Node{
 	SinhVien data;
@@ -27,9 +27,9 @@ void nhapSV(SinhVien &sv){
     cout << "Ngay sinh(d/m/y): ";
     cin >> sv.ngaySinh.ngay >> sv.ngaySinh.thang >> sv.ngaySinh.nam;
     cin.ignore();
-    //cout << "Dia chi: "; cin.getline(sv.diaChi, 100);
-    //cout << "Lop: "; cin.getline(sv.lop, 12);
-    //cout << "Khoa: "; cin.getline(sv.khoa, 7);
+    cout << "Dia chi: "; cin.getline(sv.diaChi, 100);
+    cout << "Lop: "; cin.getline(sv.lop, 12);
+    cout << "Khoa: "; cin.getline(sv.khoa, 7);
 }
 Node* themSV(SinhVien sv){
     Node* p = new Node;
@@ -41,7 +41,7 @@ Node* themSV(SinhVien sv){
 void xuatSV(SinhVien sv){
     cout << sv.maSV << " | " << sv.hoTen << " | " << (sv.gioiTinh? "Nu" : "Nam") << " | "
          << sv.ngaySinh.ngay << "/" << sv.ngaySinh.thang << "/" << sv.ngaySinh.nam
-         //<<sv.diaChi << " | " << sv.lop << " | " << sv.khoa
+         <<sv.diaChi << " | " << sv.lop << " | " << sv.khoa
          << endl;
 }
 void themVaoList(struct Node a, struct List &A){
@@ -50,33 +50,24 @@ void themVaoList(struct Node a, struct List &A){
         A.first = p;
         return;
     }
-    if(A.first->data.maSV >= p->data.maSV){
+    if(A.first->data.maSV > p->data.maSV){
         p->next = A.first;
         A.first = p;
         return;
     }
-    struct Node* i = A.first;
-    struct Node* j = A.first;
-    while(j->next != NULL){
-        if(j->data.maSV >= p->data.maSV)
-            break;
-        j = j->next;
+    for(Node* i = A.first; i != NULL; i = i->next){
+        for(Node* j = i->next; j != NULL; j = j->next){
+            if(i->data.maSV < p->data.maSV && p->data.maSV < j->data.maSV){
+                i->next = p;
+                p->next = j;
+                return;
+            }
+            if(j->next == NULL){
+                j->next = p;
+                return;
+            }
+        }
     }
-    if(j == A.first){
-        A.first->next = p;
-        return;
-    }
-    while (i->next != j){
-        i = i->next;
-    }
-    if(j->data.maSV < a.data.maSV){
-        p->next = NULL;
-        j->next = p;
-        return;
-    }
-    i->next = p;
-    p->next = j;
-    return;
 }
 bool sameDate(Ngay a, Ngay b) {
     return (a.ngay == b.ngay && a.thang == b.thang && a.nam == b.nam);
