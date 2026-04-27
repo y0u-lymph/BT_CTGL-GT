@@ -36,11 +36,12 @@ void nhapSV(SinhVien &sv){
     cout << "Khoa: "; cin.getline(sv.khoa, 7);
 }
 void xuatSV(SinhVien sv){
-    cout << sv.maSV << " | " << sv.hoTen << " | "
+    cout << sv.maSV << " | " << sv.hoTen << " | " << (sv.gioiTinh? "Nu" : "Nam") << " | "
          << sv.ngaySinh.ngay << "/" << sv.ngaySinh.thang << "/" << sv.ngaySinh.nam
+         <<sv.diaChi << " | " << sv.lop << " | " << sv.khoa
          << endl;
 }
-void add_node(struct Node a, struct List A)//Them va sap xep tang dan
+void add_node(struct Node a, struct List A)
 {
     if(A.first->data.maSV >= a.data.maSV){
         a.next = A.first;
